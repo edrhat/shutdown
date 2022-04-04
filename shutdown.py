@@ -25,6 +25,7 @@ class Tela:
         self.img3.shutdown = shutdown
         self.img3.config(bg="#1C1C1C")
         self.img3.place(x=435, y=338)
+        self.img3.bind("<Button-1>", self.desligar2)
 
         #self.lb = Label(janela, text="Desligar sistema em")
         #self.lb["font"] = ("Lucida console", "22")
@@ -44,7 +45,7 @@ class Tela:
         self.bt = Button(janela, text="AGENDAR")
         self.bt["font"] = ("Lucida console", "20")
         self.bt.config(bg="darkgreen", foreground="white")
-        self.bt.place(x=180, y=280)
+        self.bt.place(x=180, y=260)
         self.bt.bind("<Button-1>", self.desligar)
 
         self.bt2 = Button(janela, text="Cancelar agendamento")
@@ -58,17 +59,30 @@ class Tela:
     def desligar(self,event):
 
         hora = self.h.get()
-        hr = int(hora)
-        hr2=(hr*3600)
-        comando = ("shutdown -s -t {}".format(hr2))
-        os.system(comando)
-        str(hr2)
-        messagebox.showinfo("DESLIGAMENTO AGENDADO", "O sistema desligará em {} segundos.".format(hr2))
+        if(hora == ""):
+            self.h.config(bg="#FA5858")
+            messagebox.showwarning("Erro", "Digite algum valor.")
+            self.h.config(bg="white")
+        else:
+            hr = int(hora)
+            hr2=(hr*3600)
+            comando = ("shutdown -s -t {}".format(hr2))
+            os.system(comando)
+            str(hr2)
+            messagebox.showinfo("DESLIGAMENTO AGENDADO", "O sistema desligará em {} segundos.".format(hr2))
+
+        
+        
         
 
     def cancelar(self, event):
         os.system("shutdown -a")
         messagebox.showinfo("CANCELAR AGENDAMENTO", "O desligamento foi cancelado.")
+
+
+    def desligar2(self, event):
+        os.system("shutdown -s -t 20")
+        
     
 janela = Tk()
 Tela(janela)
